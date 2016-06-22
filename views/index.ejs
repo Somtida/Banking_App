@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Online Banking</title>
+  <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="/bower_components/angular/angular.js" charset="utf-8"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular.min.js" charset="utf-8"></script> -->
+  <script src="main.js"></script>
+</head>
+<body ng-app="myApp" ng-controller='mainCtrl'>
+  <div class="container">
+    <h1 class="text-center">
+      My Bank Account
+    </h1>
+
+
+
+  <div class="jumbotron">
+    <form ng-submit="addTransaction()">
+
+      <div class="form-group">
+        <p>Description</p>
+        <input type="text" class="form-control" placeholder="Description" ng-model='newTransaction.desc' required>
+      </div>
+      <div>
+        <span>
+          <div class="form-group">
+            <p>Money: {{money | currency : ''}}</p>
+            <label>amount</label>
+            <input type="number" placeholder="amount" ng-model="newTransaction.amount" required>
+            <label class="radio-inline"><input type="radio" name="type" value="debit" ng-model='newTransaction.type'>debit</label>
+            <label class="radio-inline"><input type="radio" name="type" value="credit" ng-model='newTransaction.type'>credit</label>
+          </div>
+        </span>
+        <span>
+          <button class="btn btn-success">Submit</button>
+        </span>
+      </div>
+
+
+
+    </form>
+    </div>
+    <hr>
+
+    <!-- <p>You have <span>{{transactions.length}}</span>
+      transaction<span ng-if="transactions.length > 1">s</span>.
+    </p> -->
+
+    <ng-pluralize count="transactions.length"
+        when="{'0': 'You have no transactions.',
+                '1': 'You have 1 transaction.',
+                '2': 'You have {{transactions.length}} transactions.'}">
+    </ng-pluralize>
+
+    <table class="table" ng-show="transactions.length">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Amount</th>
+          <th>Date</th>
+          <th>type</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="transaction in transactions track by  $index">
+          <td>{{transaction.desc}}</td>
+          <td>{{transaction.amount}}</td>
+          <td>{{transaction.date | date:"MM/dd/yyyy 'at' h:mma"}}</td>
+          <td>{{transaction.type}}</td>
+          <td><button class="btn btn-danger" type="button" ng-click="deleteIt($index)">X</button></td>
+        </tr>
+      </tbody>
+
+    </table>
+
+
+  </div>
+
+
+</body>
+</html>
