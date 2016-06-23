@@ -1,8 +1,8 @@
 'use strict';
 
-let app = angular.module('myApp', [])
+let app = angular.module('myApp', ['ngStorage'])
 
-app.controller('mainCtrl', function($scope){
+app.controller('mainCtrl', function($scope, $localStorage,$sessionStorage){
   $scope.transactions = [];
 
   $scope.deleteIt = (index) => {
