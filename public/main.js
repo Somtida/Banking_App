@@ -10,9 +10,6 @@ app.controller('mainCtrl', function($scope, $localStorage){
     transactions: []
   });
 
-  console.log("$scope.transactions.transactions", $scope.transactions.transactions);
-
-
   $scope.addTransaction = () => {
     $scope.newTransaction.date = new Date();
     if($scope.newTransaction.type === "debit"){
@@ -23,17 +20,28 @@ app.controller('mainCtrl', function($scope, $localStorage){
     let newTransaction = angular.copy($scope.newTransaction);
     $scope.transactions.transactions.push(newTransaction);
 
+    $scope.newTransaction=null;
+
+
   }
 
 
   $scope.deleteIt = (index) => {
     console.log("index: ",index);
+    console.log("$scope.transactions.transactions[index]: ",$scope.transactions.transactions[index])
+    // debugger;
+    if($scope.transactions.transactions[index].type === "debit"){
+      console.log("amount before: ", $scope.transactions.balance);
+      $scope.transactions.balance += parseInt($scope.transactions.transactions[index].amount);
+      console.log("amount after: ", $scope.transactions.balance);
+    }else if($scope.transactions.transactions[index].type === "credit"){
+      console.log("amount before: ", $scope.transactions.balance);
+      $scope.transactions.balance -= parseInt($scope.transactions.transactions[index].amount);
+      console.log("amount after: ", $scope.transactions.balance);
+    }
     $scope.transactions.transactions.splice(index, 1);
+
   }
 
-  // $scope.totalBalance = () => {
-  //   let $scope.total = $scope.data.transactions.map(tran => {
-  //     console.log("tran: ",tran);
-  //   });
-  // }
+
 });

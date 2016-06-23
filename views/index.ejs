@@ -45,13 +45,13 @@
       transaction<span ng-if="transactions.length > 1">s</span>.
     </p> -->
     <div class="jumbotron showDataArea">
-      <ng-pluralize count="transactions.transactions.length"
+      <pre><ng-pluralize count="transactions.transactions.length"
           when="{'0': 'You have no transactions.',
                   '1': 'You have 1 transaction.',
                   '2': 'You have {{transactions.transactions.length}} transactions.'}">
-      </ng-pluralize>
-      <hr>
-      <table class="table" ng-show="transactions.length">
+      </ng-pluralize></pre>
+
+      <table class="table" ng-show="transactions.transactions.length">
         <thead>
           <tr>
             <th>Date</th>
@@ -62,10 +62,8 @@
           </tr>
         </thead>
         <tbody>
-          <!-- <p>{{transactions.transactions}}</p> -->
-          <pre>{{transactions}}</pre>
+
           <tr ng-repeat='transaction in transactions.transactions track by $index'>
-            <p>{{transaction}}</p>
             <td>{{transaction.date | date:"MM/dd/yyyy 'at' h:mma"}}</td>
             <td>{{transaction.desc}}</td>
             <td><span ng-show='transaction.type=="credit"'>+ {{transaction.amount}}</span></td>
@@ -76,6 +74,15 @@
 
       </table>
       </div>
+
+    <ul ng-repeat="test in testObj">
+      <li>
+        {{test.desc}}
+      </li>
+      <li>
+        {{test.amount}}
+      </li>
+    </ul>
 
   </div>
 
