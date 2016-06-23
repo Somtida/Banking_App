@@ -23,7 +23,7 @@ app.controller('mainCtrl', function($scope, $localStorage){
     $scope.newTransaction=null;
 
 
-  }
+  } 
 
 
   $scope.deleteIt = (index) => {
