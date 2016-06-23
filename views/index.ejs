@@ -12,9 +12,12 @@
 </head>
 <body ng-app="myApp" ng-controller='mainCtrl'>
   <div class="container">
-      <div class="jumbotron subject text-center">
-        <h1>MY PIGGIE BANK</h1>
-      </div>
+    <div class="jumbotron subject text-center">
+      <h3>MY PIGGIE BANK</h3>
+      <hr>
+      <h1>balance: {{transactions.balance | currency}}</h1>
+
+    </div>
 
     <div class="jumbotron formArea">
       <form ng-submit="addTransaction()">
@@ -25,16 +28,13 @@
         </div>
         <div>
           <span>
-            <div class="form-group">
-              <p>Money: {{money | currency : ''}}</p>
-              <label>amount</label>
+            <div class="form-group text-center">
+              <label>amount :  </label>
               <input type="number" placeholder="amount" ng-model="newTransaction.amount" required>
-              <label class="radio-inline"><input type="radio" name="type" value="debit" ng-model='newTransaction.type'>debit</label>
-              <label class="radio-inline"><input type="radio" name="type" value="credit" ng-model='newTransaction.type'>credit</label>
+              <label class="radio-inline"><input type="radio" name="type" value="credit" ng-model='newTransaction.type' ng-required="!newTransaction.type">credit</label>
+              <label class="radio-inline"><input type="radio" name="type" value="debit" ng-model='newTransaction.type' ng-required="!newTransaction.type">debit</label>
+              <button class="btn btn-success">Submit</button>
             </div>
-          </span>
-          <span>
-            <button class="btn btn-success">Submit</button>
           </span>
         </div>
       </form>
@@ -45,28 +45,31 @@
       transaction<span ng-if="transactions.length > 1">s</span>.
     </p> -->
     <div class="jumbotron showDataArea">
-      <ng-pluralize count="transactions.length"
+      <ng-pluralize count="transactions.transactions.length"
           when="{'0': 'You have no transactions.',
                   '1': 'You have 1 transaction.',
-                  '2': 'You have {{transactions.length}} transactions.'}">
+                  '2': 'You have {{transactions.transactions.length}} transactions.'}">
       </ng-pluralize>
       <hr>
       <table class="table" ng-show="transactions.length">
         <thead>
           <tr>
-            <th>Description</th>
-            <th>Amount</th>
             <th>Date</th>
-            <th>type</th>
+            <th>Description</th>
+            <th>Credit</th>
+            <th>Debit</th>
             <th>Delete</th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="transaction in transactions track by  $index">
-            <td>{{transaction.desc}}</td>
-            <td>{{transaction.amount}}</td>
+          <!-- <p>{{transactions.transactions}}</p> -->
+          <pre>{{transactions}}</pre>
+          <tr ng-repeat='transaction in transactions.transactions track by $index'>
+            <p>{{transaction}}</p>
             <td>{{transaction.date | date:"MM/dd/yyyy 'at' h:mma"}}</td>
-            <td>{{transaction.type}}</td>
+            <td>{{transaction.desc}}</td>
+            <td><span ng-show='transaction.type=="credit"'>+ {{transaction.amount}}</span></td>
+            <td><span ng-show='transaction.type=="debit"'>- {{transaction.amount}}</span></td>
             <td><button class="btn btn-warning" type="button" ng-click="deleteIt($index)">X</button></td>
           </tr>
         </tbody>
