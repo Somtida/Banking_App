@@ -2,37 +2,43 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Online Banking</title>
   <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="/bootswatch.min.css">
+  <link rel="stylesheet" href="/bower_components/sweetalert/dist/sweetalert.css">
   <link rel="stylesheet" href="style.css">
   <script src="/bower_components/angular/angular.js" charset="utf-8"></script>
   <script src="/bower_components/ngstorage/ngStorage.js"></script>
-  <script src="main.js"></script>
+  <script src="/bower_components/ngSweetAlert/SweetAlert.min.js"></script>
+  <script src="/bower_components/sweetalert/dist/sweetalert-dev.js"></script>
+  <script src="/js/module.js"></script>
+  <script src="/js/controllers.js"></script>
+  <script src="/js/services.js"></script>
 </head>
-<body ng-app="myApp" ng-controller='mainCtrl'>
+<body ng-app='myApp' ng-controller='mainCtrl'>
   <div class="container">
     <div class="jumbotron subject text-center">
       <h3>MY PIGGIE BANK</h3>
       <hr>
-      <h1>balance: {{transactions.balance | currency}}</h1>
+      <h1>balance: {{mydata.balance | currency}}</h1>
 
     </div>
 
-    <div class="jumbotron formArea">
+    <div class="alert alert-info formArea">
       <form ng-submit="addTransaction()">
 
         <div class="form-group">
-          <p>Description</p>
+          <p>Transaction</p>
           <input type="text" class="form-control" placeholder="Description" ng-model='newTransaction.desc' required>
         </div>
         <div>
           <span>
             <div class="form-group text-center">
               <label>amount :  </label>
-              <input type="number" placeholder="amount" ng-model="newTransaction.amount" required>
-              <label class="radio-inline"><input type="radio" name="type" value="credit" ng-model='newTransaction.type' ng-required="!newTransaction.type">credit</label>
-              <label class="radio-inline"><input type="radio" name="type" value="debit" ng-model='newTransaction.type' ng-required="!newTransaction.type">debit</label>
+              <input type="number" placeholder="amount" ng-model="newTransaction.amount" step='0.01' min=0 required>
+              <label class="radio-inline"><input type="radio" name="type" ng-value="'credit'" ng-model='newTransaction.type' ng-required="!newTransaction.type">credit</label>
+              <label class="radio-inline"><input type="radio" name="type" ng-value="'debit'" ng-model='newTransaction.type' ng-required="!newTransaction.type">debit</label>
               <button class="btn btn-success">Submit</button>
             </div>
           </span>
@@ -45,17 +51,26 @@
       transaction<span ng-if="transactions.length > 1">s</span>.
     </p> -->
     <div class="jumbotron showDataArea">
-      <pre><ng-pluralize count="transactions.transactions.length"
-          when="{'0': 'You have no transactions.',
-                  '1': 'You have 1 transaction.',
-                  '2': 'You have {{transactions.transactions.length}} transactions.'}">
-      </ng-pluralize></pre>
+      <div class="row">
+        <div class="col-xs-6">
+          <pre><ng-pluralize count="mydata.transactions.length"
+              when="{'0': 'You have no transactions.',
+                      '1': 'You have 1 transaction.',
+                      'other': 'You have {{mydata.transactions.length}} transactions.'}">
+          </ng-pluralize></pre>
+        </div>
+        <div class="col-xs-6 text-right">
+          <input type="text" ng-model="searchText" class="searchTextArea" placeholder="search" >
+        </div>
+      </div>
 
-      <table class="table" ng-show="transactions.transactions.length">
+      <br>
+
+      <table class="table" ng-show="mydata.transactions.length">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Description</th>
+            <th class="clickable" ng-click="dataValue = 'date'">Date</th>
+            <th class="clickable" ng-click="dataValue = 'desc'">Description</th>
             <th>Credit</th>
             <th>Debit</th>
             <th>Delete</th>
@@ -63,26 +78,24 @@
         </thead>
         <tbody>
 
-          <tr ng-repeat='transaction in transactions.transactions track by $index'>
-            <td>{{transaction.date | date:"MM/dd/yyyy 'at' h:mma"}}</td>
-            <td>{{transaction.desc}}</td>
-            <td><span ng-show='transaction.type=="credit"'>+ {{transaction.amount}}</span></td>
-            <td><span ng-show='transaction.type=="debit"'>- {{transaction.amount}}</span></td>
+          <tr ng-repeat='transaction in mydata.transactions | orderBy: dataValue | filter:searchText track by $index'>
+            <td>{{transaction.date | date:"MM/dd/yyyy 'at' h:mma" }}</td>
+            <td>{{transaction.desc }}</td>
+            <td><span ng-show='transaction.type=="credit"'>+ {{transaction.amount | currency}}</span></td>
+            <td><span ng-show='transaction.type=="debit"'>- {{transaction.amount | currency}}</span></td>
             <td><button class="btn btn-warning" type="button" ng-click="deleteIt($index)">X</button></td>
           </tr>
         </tbody>
-
+        <!-- <tfoot>
+          <td></td>
+          <td>TOTALS:</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tfoot> -->
       </table>
       </div>
 
-    <ul ng-repeat="test in testObj">
-      <li>
-        {{test.desc}}
-      </li>
-      <li>
-        {{test.amount}}
-      </li>
-    </ul>
 
   </div>
 

@@ -18,6 +18,10 @@
   "dependencies": {
     "angular": "^1.5.7",
     "bootstrap": "^3.3.6",
-    "ngstorage": "^0.3.10"
+    "ngstorage": "^0.3.10",
+    "ngSweetAlert": "angular-sweetalert#^1.1.0"
+  },
+  "resolutions": {
+    "angular": "^1.5.7"
   }
 }

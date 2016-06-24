@@ -18,7 +18,7 @@ app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
 
-  res.render('index', {name: 'Amy'});
+  res.render('index');
 
 });
 
