@@ -1,8 +1,12 @@
 'use strict';
 
 angular.module('myApp')
-.service('myBank', function(http){
+.service('MyBank', function(http){
   this.getAll = () => {
-    $http.get('/mybank');
+    $http.get('/transactions');
+  }
+
+  this.add = () => {
+    $http.post('/transactions')
   }
 })
