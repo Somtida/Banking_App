@@ -2,13 +2,7 @@
 
 
 angular.module('myApp')
-.controller('mainCtrl', function($scope, $localStorage ){
-  //delete $localStorage.balance;
-  //delete $localStorage.transactions;
-  $scope.mydata = $localStorage.$default({
-    balance: 0,
-    transactions: []
-  });
+.controller('mainCtrl', function($scope){
 
   $scope.addTransaction = () => {
     $scope.newTransaction.date = new Date();
